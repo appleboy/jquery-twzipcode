@@ -1,6 +1,6 @@
 {
     "name": "jquery-twzipcode",
-    "version": "1.6.0",
+    "version": "1.6.5",
     "repo": "appleboy/jquery-twzipcode",
     "description": "Taiwan zipcode plug-in for jQuery",
     "dependencies": {
