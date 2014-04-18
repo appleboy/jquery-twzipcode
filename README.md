@@ -12,6 +12,8 @@ Shim repository for the [jQuery TWzipcode](http://app.essoduke.org/twzipcode/)
 $ bower install --save jquery-twzipcode
 ```
 
+# Note
+
 在網頁建立多組 3 碼台灣郵遞區號表單元素的 jQuery Plugin ─ 讀取快速、不需使用資料庫。
 
 [範例展示 Live Demo](http://app.essoduke.org/twzipcode)
