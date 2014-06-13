@@ -363,15 +363,19 @@
                 }
             });
 
-            dz = undefined !== self.role.zipcode.data('value') ?
+            //Modify By Phoenix 2014-06-13
+            //修正判斷問題 ...
+            //jQuery.data 若取不到值，會回傳 null，導致無法正確判斷
+            //故直接修改判斷
+            dz = self.role.zipcode.data('value') ?
                  self.role.zipcode.data('value') :
                  opts.zipcodeSel;
 
-            dc = undefined !== self.role.county.data('value') ?
+            dc = self.role.county.data('value') ?
                  self.role.county.data('value') :
                  (_hasOwnProperty(data, opts.countySel) ? opts.countySel :'');
 
-            dd = undefined !== self.role.district.data('value') ?
+            dd = self.role.district.data('value') ?
                  self.role.district.data('value') :
                  opts.districtSel;
 
