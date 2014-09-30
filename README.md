@@ -16,7 +16,7 @@ $ bower install --save jquery-twzipcode
 
 在網頁建立多組 3 碼台灣郵遞區號表單元素的 jQuery Plugin ─ 讀取快速、不需使用資料庫。
 
-[範例展示 Live Demo](http://app.essoduke.org/twzipcode)
+[範例展示 Live Demo](http://app.essoduke.org/twzipcode/)
 
 
 \* **jQuery-TWzipcode v1.5 以後版本需 jQuery v1.6（支援 2.0）**
@@ -44,26 +44,19 @@ $(selector).twzipcode({
 HTML
 ```html
 ...
-<head>
-  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-  <script type="text/javascript" src="jquery.twzipcode.min.js"></script>
-</head>
-<body>
-  
-  <!-- Normal -->
-  <div id="twzipcode"></div>
-  
-  <!-- OR -->
-  <!-- HTML5 data-* (Version 1.5+) -->
-  
-  <div id="twzipcode">
-    <div data-role="county" data-style="Style Name" data-value="110"></div>
-    <div data-role="district" data-style="Style Name" data-value="台北市"></div>
-    <div data-role="zipcode" data-style="Style Name" data-value="信義區"></div>
-  </div>
-  
-</body>
-...
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="jquery.twzipcode.min.js"></script>
+
+<!-- Normal -->
+<div id="twzipcode"></div>
+
+<!-- OR HTML5 data-* (Version 1.5+) -->
+
+<div id="twzipcode">
+  <div data-role="county" data-style="Style Name" data-value="110"></div>
+  <div data-role="district" data-style="Style Name" data-value="台北市"></div>
+  <div data-role="zipcode" data-style="Style Name" data-value="信義區"></div>
+</div>
 ```
 
 Javascript
@@ -71,44 +64,54 @@ Javascript
 $('#twzipcode').twzipcode();
 ```
 
-## 參數 Parameters
+## 選項 Options
 
-### countryName (string) 
-指定縣市下拉清單元素的表單名稱。  
-_預設值: country_
+### css	(Array)
+設置元素的樣式名稱，依序為 `['縣市清單', '鄉鎮市區清單', '郵遞區號輸入框']`
 
-### districtName (string)
-指定鄉鎮市區下拉清單元素的表單名稱。  
-_預設值: district_
+### detect	(boolean)
+`v1.6.7` 是否自動偵測用戶位置。不需引入 Google Maps API。
+_預設值: false_
 
-### zipcodeName (string)
-指定郵遞區號輸入框元素的表單名稱。  
-_預設值: zipcode_
+### countyName (string)
+指定縣市下拉清單元素的表單名稱。
+_預設值: county_
 
-### countySel (string)	
+### countySel (string)
 縣市清單的預設值
 
+### districtName (string)
+鄉鎮市區下拉清單的表單名稱。
+_預設值: district_
+
 ### districtSel (string)
-鄉鎮市區清單的預設值
+鄉鎮市區的預設值
+
+### zipcodeName (string)
+郵遞區號輸入框的表單名稱。
+_預設值: zipcode_
 
 ### zipcodeSel (string)
-郵遞區號輸入框的預設值
+郵遞區號輸入框的預設值（此選項優先於 countySel, districtSel）
 
-### onCountySelect (function) 
-`version 1.5+` 綁定縣市選單 Change 事件。
+### zipcodeIntoDistrict (bool)
+`v1.6.6` 是否隱藏郵遞區號輸入框並顯示於鄉鎮市區清單內？
+_預設值: false_
 
-### onDistrictSelect (function) 
-`version 1.5+` 綁定鄉鎮市區選單 Change 事件。
+### onCountySelect (function)
+`v1.5` 綁定縣市選單 Change 事件。
 
-### onZipcodeKeyUp (function) 
-`version 1.5+` 綁定郵遞區號輸入框 keyUp 事件（readonly 必須為 false）。  
+### onDistrictSelect (function)
+`v1.5` 綁定鄉鎮市區選單 Change 事件。
+
+### onZipcodeKeyUp (function)
+`v1.5` 綁定郵遞區號輸入框 keyUp 事件（readonly 必須為 false）。
 
 ### readonly (boolean)
-郵遞區號輸入框是否唯讀？  
+郵遞區號輸入框是否唯讀？
 _預設值: true_
 
-### css	(array)
-表單元素樣式名稱，順序格式 `['縣市清單', '鄉鎮市區清單', '郵遞區號輸入框']`
+
 
 ## 方法 Methods
 
@@ -119,7 +122,7 @@ var data = $(selector).twzipcode('data');
 console.log(data);
 ```
 
-### destory	
+### destory
 從指定的元素移除 Plugin
 ```javascript
 $(selector).twzipcode('destory');
@@ -136,7 +139,7 @@ $(selector).twzipcode('reset');
 ```javascript
 var qs = $(selector).twzipcode('serialize');
 console.log(qs);
-// output: 
+// output:
 // county=AAA&district=BBB&zipcode=999
 ```
 
@@ -183,9 +186,9 @@ $('#container').twzipcode({
 ```
 ## 支援
 
-請拜訪 http://app.essoduke.org/twzipcode 留言取得支援。
+請拜訪 http://app.essoduke.org/twzipcode/ 取得支援。
 
 ## 授權
 
-v1.6.2 開始採用 [MIT License](http://opensource.org/licenses/MIT)  
+v1.6.2 開始採用 [MIT License](http://opensource.org/licenses/MIT)
 v1.6.1 及更早版本採用 [創用 CC 姓名標示-相同方式分享 3.0  台灣授權條款](http://creativecommons.org/licenses/by-sa/3.0/deed.zh_TW)。
