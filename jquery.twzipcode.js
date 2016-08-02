@@ -1,38 +1,17 @@
 /**
- * The MIT License
- * Copyright (c) 2014 Essoduke Chang. http://essoduke.org
+ * jQuery TWzipcode plugin
+ * https://code.essoduke.org/twzipcode/
+ * Copyright 2016 essoduke.org, Licensed MIT.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * Changelog
+ * -------------------------------
+ * 修正使用 html data-value 的方式傳入預設值無效的錯誤。
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * jQuery TWzipcode 台灣郵遞區號 jQuery 擴充套件
- * 輕鬆地建立多組台灣郵遞區號下拉清單，讀取快速、完全不需使用資料庫。
- *
- * @author Essoduke Chang
- * @see http://app.essoduke.org/twzipcode/
- * @version 1.6.7
- *
- * [Changelog]
- * 恢復 detect(bool) 參數的支援，可設置是否自動讀取用戶的位置（瀏覽器需 GeoLocation API 支援）
- *
- * Last Modified 2014.08.29.143917
+ * @author essoduke.org
+ * @version 1.7.8
+ * @license MIT License
  */
-;(function ($, window, undefined) {
+;(function ($, window, document, undefined) {
 
     'use strict';
 
@@ -58,13 +37,13 @@
           '寶山鄉': '308', '竹東鎮': '310', '五峰鄉': '311', '橫山鄉': '312', '尖石鄉': '313', '北埔鄉': '314',
           '峨嵋鄉': '315'
         },
-        '桃園縣': {
-          '中壢市': '320', '平鎮市': '324', '龍潭鄉': '325', '楊梅鎮': '326', '新屋鄉': '327', '觀音鄉': '328',
-          '桃園市': '330', '龜山鄉': '333', '八德市': '334', '大溪鎮': '335', '復興鄉': '336', '大園鄉': '337',
-          '蘆竹鄉': '338'
+        '桃園市': {
+          '中壢區': '320', '平鎮區': '324', '龍潭區': '325', '楊梅區': '326', '新屋區': '327', '觀音區': '328',
+          '桃園區': '330', '龜山區': '333', '八德區': '334', '大溪區': '335', '復興區': '336', '大園區': '337',
+          '蘆竹區': '338'
         },
         '苗栗縣': {
-          '竹南鎮': '350', '頭份鎮': '351', '三灣鄉': '352', '南庄鄉': '353', '獅潭鄉': '354', '後龍鎮': '356',
+          '竹南鎮': '350', '頭份市': '351', '三灣鄉': '352', '南庄鄉': '353', '獅潭鄉': '354', '後龍鎮': '356',
           '通霄鎮': '357', '苑裡鎮': '358', '苗栗市': '360', '造橋鄉': '361', '頭屋鄉': '362', '公館鄉': '363',
           '大湖鄉': '364', '泰安鄉': '365', '銅鑼鄉': '366', '三義鄉': '367', '西湖鄉': '368', '卓蘭鎮': '369'
         },
@@ -77,7 +56,7 @@
         },
         '彰化縣': {
           '彰化市': '500', '芬園鄉': '502', '花壇鄉': '503', '秀水鄉': '504', '鹿港鎮': '505', '福興鄉': '506',
-          '線西鄉': '507', '和美鎮': '508', '伸港鄉': '509', '員林鎮': '510', '社頭鄉': '511', '永靖鄉': '512',
+          '線西鄉': '507', '和美鎮': '508', '伸港鄉': '509', '員林市': '510', '社頭鄉': '511', '永靖鄉': '512',
           '埔心鄉': '513', '溪湖鎮': '514', '大村鄉': '515', '埔鹽鄉': '516', '田中鎮': '520', '北斗鎮': '521',
           '田尾鄉': '522', '埤頭鄉': '523', '溪州鄉': '524', '竹塘鄉': '525', '二林鎮': '526', '大城鄉': '527',
           '芳苑鄉': '528', '二水鄉': '530'
@@ -111,14 +90,15 @@
         '高雄市': {
           '新興區': '800', '前金區': '801', '苓雅區': '802', '鹽埕區': '803', '鼓山區': '804', '旗津區': '805',
           '前鎮區': '806', '三民區': '807', '楠梓區': '811', '小港區': '812', '左營區': '813',
-          '仁武區': '814', '大社區': '815', '岡山區': '820', '路竹區': '821', '阿蓮區': '822', '田寮鄉': '823',
-          '燕巢區': '824', '橋頭區': '825', '梓官區': '826', '彌陀區': '827', '永安區': '828', '湖內鄉': '829',
+          '仁武區': '814', '大社區': '815', '東沙群島': '817', '南沙群島': '819', '岡山區': '820', '路竹區': '821',
+          '阿蓮區': '822', '田寮區': '823',
+          '燕巢區': '824', '橋頭區': '825', '梓官區': '826', '彌陀區': '827', '永安區': '828', '湖內區': '829',
           '鳳山區': '830', '大寮區': '831', '林園區': '832', '鳥松區': '833', '大樹區': '840', '旗山區': '842',
           '美濃區': '843', '六龜區': '844', '內門區': '845', '杉林區': '846', '甲仙區': '847', '桃源區': '848',
           '那瑪夏區': '849', '茂林區': '851', '茄萣區': '852'
         },
         '屏東縣': {
-          '屏東市': '900', '三地門': '901', '霧臺鄉': '902', '瑪家鄉': '903', '九如鄉': '904', '里港鄉': '905',
+          '屏東市': '900', '三地門鄉': '901', '霧臺鄉': '902', '瑪家鄉': '903', '九如鄉': '904', '里港鄉': '905',
           '高樹鄉': '906', '鹽埔鄉': '907', '長治鄉': '908', '麟洛鄉': '909', '竹田鄉': '911', '內埔鄉': '912',
           '萬丹鄉': '913', '潮州鎮': '920', '泰武鄉': '921', '來義鄉': '922', '萬巒鄉': '923', '崁頂鄉': '924',
           '新埤鄉': '925', '南州鄉': '926', '林邊鄉': '927', '東港鎮': '928', '琉球鄉': '929', '佳冬鄉': '931',
@@ -137,25 +117,8 @@
         },
         '金門縣': {'金沙鎮': '890', '金湖鎮': '891', '金寧鄉': '892', '金城鎮': '893', '烈嶼鄉': '894', '烏坵鄉': '896'},
         '連江縣': {'南竿鄉': '209', '北竿鄉': '210', '莒光鄉': '211', '東引鄉': '212'},
-        '澎湖縣': {'馬公市': '880', '西嶼鄉': '881', '望安鄉': '882', '七美鄉': '883', '白沙鄉': '884', '湖西鄉': '885'},
-        '南海諸島': {'東沙': '817', '南沙': '819'}
+        '澎湖縣': {'馬公市': '880', '西嶼鄉': '881', '望安鄉': '882', '七美鄉': '883', '白沙鄉': '884', '湖西鄉': '885'}
     };
-
-    /**
-     * _hasOwnProperty for compatibility IE
-     * @param {Object} obj Object
-     * @param {string} property Property name
-     * @return {bool}
-     * @version 2.4.3
-     */
-    function _hasOwnProperty (obj, property) {
-        try {
-            return !window.hasOwnProperty ?
-                   Object.prototype.hasOwnProperty.call(obj, property.toString()) :
-                   obj.hasOwnProperty(property.toString());
-        } catch (ignore) {
-        }
-    }
     /**
      * twzipcode Constructor
      * @param {Object} container HTML element
@@ -169,18 +132,17 @@
          */
         var defaults = {
             'countyName': 'county',
-            'countySel': '',
             'css': [],
             'detect': false,             // v1.6.7
             'districtName': 'district',
-            'districtSel': '',
             'onCountySelect': null,      // v1.5
             'onDistrictSelect': null,    // v1.5
             'onZipcodeKeyUp': null,      // v1.5
             'readonly': false,
             'zipcodeName': 'zipcode',
-            'zipcodeSel': '',
-            'zipcodeIntoDistrict': false // v1.6.6
+            'zipcodePlaceholder': '郵遞區號',
+            'zipcodeIntoDistrict': false, // v1.6.6
+            'googleMapsKey': '' // v1.6.9
         };
         /**
          * DOM of selector
@@ -196,11 +158,11 @@
         this.init();
     }
     /**
-     * twzipcode prototype
+     * TWzipcode prototype
      */
     TWzipcode.prototype = {
 
-        VERSION: '1.6.7',
+        VERSION: '1.7.8',
 
         /**
          * Method: Get all post data
@@ -208,9 +170,10 @@
          */
         data: function () {
             var wrap = this.wrap;
-            return _hasOwnProperty(data, wrap.county.val()) ? data[wrap.county.val()] : data;
+            return 'undefined' !== typeof data[wrap.county.val()] ?
+                   data[wrap.county.val()] :
+                   data;
         },
-
         /**
          * Method: Serialize the data
          * @return {string}
@@ -234,26 +197,70 @@
             }
             return result.join('&');
         },
-
         /**
          * Method: Destroy the container.
-         * @this {twzipcode}
+         * @this {TWzipcode}
          */
         destroy: function () {
             $.data(this.container.get(0), 'twzipcode', null);
             if (this.container.length) {
-                return this.container.empty().off('change keyup blur');
+                return this.container.empty().off('change.twzipcode keyup.twzipcode blur.twzipcode');
             }
         },
+        /**
+         * Method: Get elements of instance
+         * @param {(string|Array)} opts Type name
+         * @param {Function} callback Function callback
+         */
+        get: function (callback) {
+            if ('function' === typeof callback) {
+                callback.call(this, this.wrap);
+            } else {
+                return this.wrap;
+            }
+        },
+        /**
+         * Method: Set value for elements.
+         * @param {(string|number|Object)} opts Input value
+         */
+        set: function (opts) {
 
+            var self = this,
+                def = {
+                    'county': '',
+                    'district': '',
+                    'zipcode': ''
+                },
+                opt = $.extend({}, def, opts);
+
+            try {
+                if ('string' === typeof opts || 'number' === typeof opts) {
+                    self.wrap.zipcode.val(opts).trigger('blur.twzipcode');
+                } else {
+                    if (opt.zipcode) {
+                        self.wrap.zipcode.val(opt.zipcode).trigger('blur.twzipcode');
+                    }
+                    if (opt.county) {
+                        self.wrap.county.val(opt.county).trigger('change.twzipcode');
+                    }
+                    if (opt.district) {
+                        self.wrap.district.val(opt.district).trigger('change.twzipcode');
+                    }
+                }
+            } catch (ignore) {
+                console.warn(ignore.message);
+            } finally {
+                return self.container;
+            }
+        },
         /**
          * Method: Reset the selected items to default.
-         * @this {twzipcode}
+         * @this {TWzipcode}
          */
         reset: function (container, obj) {
             var self = this,
                 wrap = self.wrap,
-                county = {},
+                county = '',
                 list = {
                     'county': '<option value="">縣市</option>',
                     'district': '<option value="">鄉鎮市區</option>'
@@ -262,13 +269,13 @@
 
             switch (obj) {
             case 'district':
-                wrap.district.empty().html(list.district);
+                wrap.district.html(list.district);
                 break;
             default:
-                wrap.county.empty().html(list.county);
-                wrap.district.empty().html(list.district);
+                wrap.county.html(list.county);
+                wrap.district.html(list.district);
                 for (county in data) {
-                    if (_hasOwnProperty(data, county)) {
+                    if ('undefined' !== typeof data[county]) {
                         tpl.push('<option value="' + county + '">' + county + '</option>');
                     }
                 }
@@ -277,10 +284,9 @@
             }
             wrap.zipcode.val('');
         },
-
         /**
          * Binding the event of the elements
-         * @this {twzipcode}
+         * @this {TWzipcode}
          */
         bindings: function () {
 
@@ -292,9 +298,9 @@
                 dd   = '';
 
             // county
-            wrap.county.on('change', function () {
+            wrap.county.on('change.twzipcode', function () {
                 var val = $(this).val(),
-                    district = {},
+                    district = '',
                     tpl = [];
 
                 wrap.district.empty();
@@ -302,7 +308,7 @@
                 if (val) {
                     if (true === opts.zipcodeIntoDistrict) {
                         for (district in data[val]) {
-                            if (_hasOwnProperty(data[val], district)) {
+                            if ('undefined' !== typeof data[val][district]) {
                                 tpl.push('<option value="' + district + '">');
                                 tpl.push(data[val][district] + ' ' + district);
                                 tpl.push('</option>');
@@ -310,36 +316,37 @@
                         }
                     } else {
                         for (district in data[val]) {
-                            if (_hasOwnProperty(data[val], district)) {
+                            if ('undefined' !== typeof data[val][district]) {
                                 tpl.push('<option value="' + district + '">');
                                 tpl.push(district);
                                 tpl.push('</option>');
                             }
                         }
                     }
-                    wrap.district.append(tpl.join('')).trigger('change');
+                    wrap.district.append(tpl.join('')).trigger('change.twzipcode');
                 } else {
                     wrap.county.find('option:first').prop('selected', true);
                     self.reset('district');
                 }
                 // County callback binding
                 if ('function' === typeof opts.onCountySelect) {
-                    opts.onCountySelect.call(this, wrap.county);
+                    opts.onCountySelect.call(this);
                 }
             });
             // District
-            wrap.district.on('change', function () {
+            wrap.district.on('change.twzipcode', function () {
                 var val = $(this).val();
                 if (wrap.county.val()) {
                     wrap.zipcode.val(data[wrap.county.val()][val]);
                 }
                 // District callback binding
                 if ('function' === typeof opts.onDistrictSelect) {
-                    opts.onDistrictSelect.call(this, wrap.district);
+                    opts.onDistrictSelect.call(this);
                 }
             });
             // Zipcode
-            wrap.zipcode.on('keyup blur', function () {
+            wrap.zipcode.on('keyup.twzipcode blur.twzipcode', function () {
+                
                 var obj = $(this),
                     val = '',
                     i   = '',
@@ -349,14 +356,14 @@
 
                 if (3 === val.length) {
                     for (i in data) {
-                        if (_hasOwnProperty(data, i)) {
+                        if ('undefined' !== typeof data[i]) {
                             for (j in data[i]) {
-                                if (_hasOwnProperty(data[i], j)) {
-                                    if (val === data[i][j]) {
-                                        wrap.county.val(i).trigger('change');
-                                        wrap.district.val(j).trigger('change');
-                                        break;
-                                    }
+                                if ('undefined' !== typeof data[i][j] &&
+                                    val === data[i][j]
+                                ) {
+                                    wrap.county.val(i).trigger('change.twzipcode');
+                                    wrap.district.val(j).trigger('change.twzipcode');
+                                    break;
                                 }
                             }
                         }
@@ -364,46 +371,59 @@
                 }
                 // Zipcode callback binding
                 if ('function' === typeof opts.onZipcodeKeyUp) {
-                    opts.onZipcodeKeyUp.call(this, wrap.zipcode);
+                    opts.onZipcodeKeyUp.call(this);
                 }
             });
 
-            dz = undefined !== self.role.zipcode.data('value') ?
-                 self.role.zipcode.data('value') :
-                 opts.zipcodeSel;
+            dz = 'undefined' !== typeof opts.zipcodeSel ?
+                 opts.zipcodeSel :
+                 (
+                    'undefined' !== typeof self.role.zipcode.data('value') ?
+                    self.role.zipcode.data('value') :
+                    opts.zipcodeSel
+                 );
 
-            dc = undefined !== self.role.county.data('value') ?
-                 self.role.county.data('value') :
-                 (_hasOwnProperty(data, opts.countySel) ? opts.countySel : '');
+            dc = 'undefined' !== typeof opts.countySel ?
+                 opts.countySel :
+                 (
+                    'undefined' !== typeof self.role.county.data('value') ?
+                    self.role.county.data('value') :
+                    opts.countySel
+                 );
 
-            dd = undefined !== self.role.district.data('value') ?
-                 self.role.district.data('value') :
-                 opts.districtSel;
+            dd = 'undefined' !== typeof opts.districtSel ?
+                 opts.districtSel :
+                 (
+                    'undefined' !== typeof self.role.district.data('value') ?
+                    self.role.district.data('value') :
+                    opts.districtSel
+                 );
 
             // Default value
             if (dc) {
-                self.wrap.county.val(dc).trigger('change');
-                if (_hasOwnProperty(data[dc], dd)) {
-                    self.wrap.district.val(dd).trigger('change');
+                self.wrap.county.val(dc).trigger('change.twzipcode');
+                if ('undefined' !== typeof data[dc][dd]) {
+                    self.wrap.district.val(dd).trigger('change.twzipcode');
                 }
             }
             if (dz && 3 === dz.toString().length) {
-                self.wrap.zipcode.val(dz).trigger('blur');
+                self.wrap.zipcode.val(dz).trigger('blur.twzipcode');
             }
         },
-
         /**
          * Geolocation detect
-         * @this {twzipcode}
+         * @this {TWzipcode}
          */
         geoLocation: function () {
+            
 			var self = this,
                 geolocation = navigator.geolocation,
                 options = {
                     'maximumAge': 600000,
                     'timeout': 3000,
                     'enableHighAccuracy': false
-                };
+                },
+                opts = self.options;
 
             if (!geolocation) {
                 return;
@@ -411,45 +431,46 @@
 
             geolocation.getCurrentPosition(
                 function (loc) {
+                    
                     var latlng = {};
-                    if (_hasOwnProperty(loc, 'coords') &&
-                        _hasOwnProperty(loc.coords, 'latitude') &&
-                        _hasOwnProperty(loc.coords, 'longitude')
+                    if (('coords' in loc) &&
+                        ('latitude' in loc.coords) &&
+                        ('longitude' in loc.coords)
                     ) {
                         latlng = [loc.coords.latitude, loc.coords.longitude];
                         $.getJSON(
-                            '//maps.googleapis.com/maps/api/geocode/json',
+                            'https://maps.googleapis.com/maps/api/geocode/json',
                             {
-                                'sensor' : false,
-                                'address': latlng.join(',')
+                                'key': opts.googleMapsKey,
+                                'sensor': false,
+                                'latlng': latlng.join(',')
                             },
                             function (data) {
                                 var postal = '';
                                 if (data &&
-                                    _hasOwnProperty(data, 'results') &&
-                                    _hasOwnProperty(data.results[0], 'address_components') &&
-                                    undefined !== data.results[0].address_components[0]
+                                    'undefined' !== typeof data.results &&
+                                    'undefined' !== typeof data.results[0].address_components &&
+                                    'undefined' !== typeof data.results[0].address_components[0]
                                 ) {
                                     postal = data.results[0]
                                                  .address_components[data.results[0].address_components.length - 1]
                                                  .long_name;
                                     if (postal) {
-                                        self.wrap.zipcode.val(postal.toString()).trigger('blur');
+                                        self.wrap.zipcode.val(postal.toString()).trigger('blur.twzipcode');
                                     }
                                 }
                             });
                     }
                 },
                 function (error) {
-                    //console.error(error);
+                    console.error(error);
                 },
                 options
             );
         },
-
         /**
          * twzipcode Initialize
-         * @this {twzipcode}
+         * @this {TWzipcode}
          */
         init: function () {
 
@@ -464,23 +485,24 @@
                 countyName = role.county.data('name') || opts.countyName,
                 districtName = role.district.data('name') || opts.districtName,
                 zipcodeName = role.zipcode.data('name') || opts.zipcodeName,
+                zipcodePlaceholder = role.zipcode.data('placeholder') || opts.zipcodePlaceholder,
                 readonly = role.zipcode.data('readonly') || opts.readonly;
 
             // Elements create
             $('<select/>')
                 .attr('name', countyName)
-                .addClass(role.county.data('style') || (undefined !== opts.css[0] ? opts.css[0] : ''))
+                .addClass(role.county.data('style') || ('undefined' !== typeof opts.css[0] ? opts.css[0] : ''))
                 .appendTo(role.county.length ? role.county : container);
 
             $('<select/>')
                 .attr('name', districtName)
-                .addClass(role.district.data('style') || (undefined !== opts.css[1] ? opts.css[1] : ''))
+                .addClass(role.district.data('style') || ('undefined' !== typeof opts.css[1] ? opts.css[1] : ''))
                 .appendTo(role.district.length ? role.district : container);
 
             $('<input/>')
-                .attr({'type': 'text', 'name': zipcodeName})
+                .attr({'type': 'text', 'name': zipcodeName, 'placeholder': zipcodePlaceholder})
                 .prop('readonly', readonly)
-                .addClass(role.zipcode.data('style') || (undefined !== opts.css[2] ? opts.css[2] : ''))
+                .addClass(role.zipcode.data('style') || ('undefined' !== typeof opts.css[2] ? opts.css[2] : ''))
                 .appendTo(role.zipcode.length ? role.zipcode : container);
 
             self.wrap = {
@@ -504,37 +526,32 @@
             }
         }
     };
-
     /**
      * jQuery twzipcode instance
      * @param {Object} options Plugin settings
      * @public
      */
     $.fn.twzipcode = function (options) {
+        var instance = {},
+            result = [],
+            args = arguments,
+            id  = 'twzipcode';
         if ('string' === typeof options) {
-            switch (options) {
-            case 'data':
-            case 'destroy':
-            case 'reset':
-            case 'serialize':
-                var result = {},
-                    instance = {};
-                this.each(function () {
-                    instance = $.data(this, 'twzipcode');
-                    if (instance instanceof TWzipcode && 'function' === typeof instance[options]) {
-                        result = instance[options].apply(instance, Array.prototype.slice.call(arguments, 1));
-                    }
-                });
-                break;
-            }
-            return undefined !== result ? result : this;
+            this.each(function () {
+                instance = $.data(this, id);
+                if (instance instanceof TWzipcode && 'function' === typeof instance[options]) {
+                    result = instance[options].apply(instance, Array.prototype.slice.call(args, 1));
+                }
+            });
+            return 'undefined' !== typeof result ? result : this;
         } else {
             return this.each(function () {
-                if (!$.data(this, 'twzipcode')) {
-                    $.data(this, 'twzipcode', new TWzipcode(this, options));
+                if (!$.data(this, id)) {
+                    $.data(this, id, new TWzipcode(this, options));
                 }
             });
         }
     };
 
-}(jQuery, window));
+})(window.jQuery || {}, window, document);
+//#EOF
